@@ -11,12 +11,12 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/USERNAME/REPO.git"
+    "url": "git+https://github.com/carolinjoannasheryl/Student-Support-Ticket-Management-.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/REPO/issues"
+    "url": "https://github.com/carolinjoannasheryl/Student-Support-Ticket-Management-/issues"
   },
-  "homepage": "https://github.com/USERNAME/REPO#readme",
+  "homepage": "https://github.com/carolinjoannasheryl/Student-Support-Ticket-Management-#readme",
   "dependencies": {
     "@angular/animations": "^18.2.0",
     "@angular/common": "^18.2.0",
