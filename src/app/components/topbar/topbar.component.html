@@ -1,0 +1,15 @@
+<header class="topbar">
+  <div class="brand">🎓 Campus Support Desk</div>
+  <div class="whoami" *ngIf="state.currentUser() as cu">
+    <label>Acting as</label>
+    <select [ngModel]="cu.id" (ngModelChange)="onUserChange($event)">
+      <option *ngFor="let u of state.users()" [value]="u.id">{{ u.name }} — {{ u.role }}</option>
+    </select>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab" [class.active]="state.view() === 'dashboard'" (click)="setView('dashboard')">Dashboard</button>
+  <button class="tab" [class.active]="state.view() === 'tickets'" (click)="setView('tickets')">Tickets</button>
+  <button class="tab" [class.active]="state.view() === 'new'" (click)="setView('new')">+ New Ticket</button>
+</nav>

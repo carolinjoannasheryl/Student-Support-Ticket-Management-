@@ -1,0 +1,28 @@
+<table class="ticket-table" *ngIf="tickets.length; else empty">
+  <thead>
+    <tr>
+      <th>Ticket</th><th>Subject</th><th>Category</th><th>Priority</th>
+      <th>Status</th><th>Assigned</th><th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of tickets" (click)="onRowClick(t)">
+      <td>{{ t.ticket_no }}</td>
+      <td>{{ t.subject }}</td>
+      <td>{{ t.category.replace('_',' ') }}</td>
+      <td><span class="pill" [ngClass]="t.priority">{{ t.priority }}</span></td>
+      <td>
+        <span class="status-chip" [ngClass]="t.status">{{ t.status.replace('_',' ') }}</span>
+        <span class="breach-flag" *ngIf="isBreached(t)">SLA BREACH</span>
+      </td>
+      <td>
+        <ng-container *ngIf="t.assigned_to_name; else unassigned">{{ t.assigned_to_name }}</ng-container>
+        <ng-template #unassigned><em>Unassigned</em></ng-template>
+      </td>
+      <td>{{ ageHours(t.created_at) }}h</td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #empty>
+  <div class="empty-state">{{ emptyMessage }}</div>
+</ng-template>

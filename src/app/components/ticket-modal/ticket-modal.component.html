@@ -1,0 +1,54 @@
+<div class="modal" (click)="$event.target === $event.currentTarget && close()">
+  <div class="modal-card" *ngIf="ticket as t">
+    <div class="modal-head">
+      <div>
+        <h2>{{ t.ticket_no }}: {{ t.subject }}</h2>
+        <div class="ticket-meta">
+          Raised by {{ t.raised_by_name || '—' }} · {{ t.department }} ·
+          <span class="pill" [ngClass]="t.priority">{{ t.priority }}</span>
+          <span class="status-chip" [ngClass]="t.status">{{ t.status.replace('_',' ') }}</span>
+          <span class="breach-flag" *ngIf="isBreached(t)">SLA BREACH</span>
+          · SLA due {{ fmtDate(t.sla_due_at) }}
+        </div>
+      </div>
+      <button class="close-btn" (click)="close()">✕</button>
+    </div>
+
+    <div class="desc-box">
+      <ng-container *ngIf="t.description; else noDesc">{{ t.description }}</ng-container>
+      <ng-template #noDesc><em>No description provided.</em></ng-template>
+    </div>
+
+    <div class="action-row">
+      <select (change)="onStatusChange($any($event.target).value); $any($event.target).value=''">
+        <option value="">Change status…</option>
+        <option *ngFor="let s of allowedStatuses" [value]="s">{{ s.replace('_',' ') }}</option>
+      </select>
+      <select (change)="onAssignChange($any($event.target).value); $any($event.target).value=''">
+        <option value="">Reassign…</option>
+        <option *ngFor="let u of staffAndAdmin" [value]="u.id" [selected]="u.id === t.assigned_to">{{ u.name }}</option>
+      </select>
+      <select (change)="onPriorityChange($any($event.target).value); $any($event.target).value=''">
+        <option value="">Change priority…</option>
+        <option *ngFor="let p of allowedPriorities" [value]="p">{{ p }}</option>
+      </select>
+    </div>
+    <div *ngIf="actionError" style="color:var(--urgent);font-size:12.5px;margin:-10px 0 12px;">{{ actionError }}</div>
+
+    <h3 style="font-size:13px;color:var(--ink-soft);margin-bottom:4px;">Activity</h3>
+    <ul class="activity-list">
+      <li class="activity-item" *ngFor="let a of t.activity">
+        <div class="dot"></div>
+        <div>
+          <div><span class="who">{{ a.actor_name || 'System' }}</span> — {{ describeActivity(a) }}</div>
+          <div class="when">{{ fmtDate(a.created_at) }}</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="comment-box">
+      <input type="text" [(ngModel)]="commentText" (keyup.enter)="addComment()" placeholder="Add a comment / update…" />
+      <button class="btn secondary" (click)="addComment()">Add</button>
+    </div>
+  </div>
+</div>

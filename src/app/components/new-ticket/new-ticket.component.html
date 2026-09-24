@@ -1,0 +1,43 @@
+<div class="form-panel">
+  <h3 style="margin-top:0">Raise a new ticket</h3>
+
+  <label>Subject</label>
+  <input type="text" [(ngModel)]="subject" placeholder="Short summary of the issue" />
+
+  <label>Description</label>
+  <textarea [(ngModel)]="description" placeholder="What happened? Include relevant dates, amounts, or reference numbers."></textarea>
+
+  <label>Category</label>
+  <select [(ngModel)]="category">
+    <option value="fees">Fees</option>
+    <option value="attendance">Attendance</option>
+    <option value="id_card">ID Card</option>
+    <option value="documents">Documents</option>
+    <option value="certificates">Certificates</option>
+    <option value="other">Other</option>
+  </select>
+
+  <label>Priority</label>
+  <select [(ngModel)]="priority">
+    <option value="low">Low — 96h SLA</option>
+    <option value="medium">Medium — 48h SLA</option>
+    <option value="high">High — 24h SLA</option>
+    <option value="urgent">Urgent — 6h SLA</option>
+  </select>
+
+  <label>Raised by</label>
+  <select [(ngModel)]="raisedBy">
+    <option *ngFor="let u of allUsers" [value]="u.id">{{ u.name }} ({{ u.role }})</option>
+  </select>
+
+  <label>Assign to (optional)</label>
+  <select [(ngModel)]="assignedTo">
+    <option value="">Leave unassigned</option>
+    <option *ngFor="let u of staffAndAdmin" [value]="u.id">{{ u.name }} — {{ u.department }}</option>
+  </select>
+
+  <button class="btn" (click)="submit()">Raise ticket</button>
+  <div *ngIf="message" [style.color]="isError ? 'var(--urgent)' : 'var(--ok)'" style="margin-top:10px;font-size:13px;">
+    {{ message }}
+  </div>
+</div>

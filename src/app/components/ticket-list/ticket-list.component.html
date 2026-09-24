@@ -1,0 +1,30 @@
+<div class="filter-bar">
+  <input type="text" [(ngModel)]="q" (ngModelChange)="onFilterChange()" placeholder="Search subject, description, ticket no…" />
+  <select [(ngModel)]="status" (ngModelChange)="onFilterChange()">
+    <option value="">All statuses</option>
+    <option *ngFor="let s of statuses" [value]="s">{{ s.replace('_',' ') }}</option>
+  </select>
+  <select [(ngModel)]="priority" (ngModelChange)="onFilterChange()">
+    <option value="">All priorities</option>
+    <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+  </select>
+  <select [(ngModel)]="category" (ngModelChange)="onFilterChange()">
+    <option value="">All categories</option>
+    <option *ngFor="let c of categories" [value]="c">{{ c.replace('_',' ') }}</option>
+  </select>
+  <select [(ngModel)]="assignedTo" (ngModelChange)="onFilterChange()">
+    <option value="">All assignees</option>
+    <option *ngFor="let u of staffAndAdmin" [value]="u.id">{{ u.name }}</option>
+  </select>
+</div>
+
+<div *ngIf="!loading; else loadingTpl">
+  <app-ticket-table
+    [tickets]="tickets"
+    emptyMessage="No tickets match these filters."
+    (select)="openTicket($event)">
+  </app-ticket-table>
+</div>
+<ng-template #loadingTpl>
+  <div class="empty-state">Loading…</div>
+</ng-template>

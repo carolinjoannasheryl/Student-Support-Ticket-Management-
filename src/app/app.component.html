@@ -1,0 +1,16 @@
+<app-topbar></app-topbar>
+
+<div *ngIf="appState.isBackendOffline()" class="offline-banner">
+  ⚠️ <strong>Backend Offline:</strong> Displaying demo preview data. Start the Express API (`cd backend && npm start`) and PostgreSQL DB for live data connection.
+</div>
+
+<main>
+  <ng-container [ngSwitch]="appState.view()">
+    <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+    <app-ticket-list *ngSwitchCase="'tickets'"></app-ticket-list>
+    <app-new-ticket *ngSwitchCase="'new'"></app-new-ticket>
+  </ng-container>
+</main>
+
+<app-ticket-modal *ngIf="appState.openTicketId() as id" [ticketId]="id"></app-ticket-modal>
+

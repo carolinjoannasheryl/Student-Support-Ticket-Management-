@@ -1,0 +1,41 @@
+<ng-container *ngIf="stats; else loadingTpl">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num">{{ stats.total }}</div><div class="label">Total tickets</div></div>
+    <div class="stat-card"><div class="num">{{ stats.open }}</div><div class="label">Currently open</div></div>
+    <div class="stat-card" [class.warn]="stats.breached"><div class="num">{{ stats.breached }}</div><div class="label">SLA breached</div></div>
+    <div class="stat-card"><div class="num">{{ stats.unassigned }}</div><div class="label">Unassigned</div></div>
+    <div class="stat-card"><div class="num">{{ stats.avgAgeHours }}h</div><div class="label">Avg. age (open)</div></div>
+  </div>
+
+  <div class="panel-row">
+    <div class="panel">
+      <h3>By status</h3>
+      <div class="bar-row" *ngFor="let b of statusBars">
+        <div class="bar-label">{{ b.key.replace('_',' ') }}</div>
+        <div class="bar-track"><div class="bar-fill" [style.width.%]="b.pct"></div></div>
+        <div class="bar-count">{{ b.count }}</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>By priority</h3>
+      <div class="bar-row" *ngFor="let b of priorityBars">
+        <div class="bar-label">{{ b.key }}</div>
+        <div class="bar-track"><div class="bar-fill" [ngClass]="'fill-' + b.key" [style.width.%]="b.pct"></div></div>
+        <div class="bar-count">{{ b.count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>SLA-breached tickets need attention</h3>
+    <app-ticket-table
+      [tickets]="breached"
+      emptyMessage="Nothing breached right now. 🎉"
+      (select)="openTicket($event)">
+    </app-ticket-table>
+  </div>
+</ng-container>
+
+<ng-template #loadingTpl>
+  <div class="empty-state">Loading…</div>
+</ng-template>
